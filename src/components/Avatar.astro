@@ -1,0 +1,13 @@
+---
+// Initials in a circle; size and font size come from the caller
+interface Props {
+  initials: string;
+  class: string;
+}
+
+const { initials, class: className } = Astro.props;
+---
+
+<span class:list={["flex flex-none items-center justify-center rounded-full font-extrabold", className]}>
+  {initials}
+</span>

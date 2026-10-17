@@ -1,0 +1,25 @@
+---
+interface Props {
+  lead: string;
+  text: string;
+  // Short description of the mock for screen readers
+  mockLabel: string;
+}
+
+const { lead, text, mockLabel } = Astro.props;
+---
+
+<li
+  class="flex flex-col gap-18 rounded-28 bg-white px-14 pt-14 pb-22 md:gap-24 md:rounded-32 md:bg-mint-50 md:px-16 md:pt-16 md:pb-28"
+>
+  <span class="sr-only">{mockLabel}</span>
+  <div
+    aria-hidden="true"
+    class="flex flex-col gap-8 rounded-18 bg-mint-50 p-16 md:h-290 md:justify-center md:gap-10 md:rounded-22 md:bg-mint-100 md:p-20"
+  >
+    <slot />
+  </div>
+  <p class="px-8 text-feature font-medium text-pretty text-copy md:px-12 md:text-feature-lg">
+    <strong class="font-extrabold text-ink">{lead}</strong>{" "}{text}
+  </p>
+</li>

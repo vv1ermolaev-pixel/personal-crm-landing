@@ -1,0 +1,41 @@
+---
+import FeatureCard from "../FeatureCard.astro";
+import Highlight from "../Highlight.astro";
+import ContactCardMock from "../mocks/ContactCardMock.astro";
+import NotesMock from "../mocks/NotesMock.astro";
+import SearchMock from "../mocks/SearchMock.astro";
+---
+
+<section class="px-20 pt-72 md:bg-white md:px-gutter md:pt-0 md:pb-120">
+  <div class="mx-auto flex max-w-content flex-col gap-24 md:gap-40 md:pt-120">
+    <h2 class="font-display text-h2-solution font-semibold md:max-w-960 md:text-h2-solution-lg">
+      Tribe хранит не только номер, но и <Highlight
+        class="rounded-10 bg-white px-8 md:rounded-14 md:bg-pistachio md:px-12"
+        >всё, что вы знаете о человеке</Highlight
+      >
+    </h2>
+    <ul class="flex flex-col gap-12 md:gap-16 lg:grid lg:grid-cols-3 lg:items-stretch">
+      <FeatureCard
+        lead="Всё о человеке в одной карточке:"
+        text="кто это, откуда знакомы, телефон, почта"
+        mockLabel="Пример карточки контакта: Анна Соколова, продакт в финтехе, познакомились на конференции в Казани"
+      >
+        <ContactCardMock />
+      </FeatureCard>
+      <FeatureCard
+        lead="Быстрый поиск:"
+        text="человек находится, пока вы набираете первые буквы"
+        mockLabel="Пример поиска: по буквам «Ан» найдены Анна Соколова и Андрей Ким"
+      >
+        <SearchMock />
+      </FeatureCard>
+      <FeatureCard
+        lead="История общения:"
+        text="заметки после разговоров сохраняются с датами. Видно, о чём говорили и что обещали"
+        mockLabel="Пример заметок: сегодня обсудили запуск и обещали прислать контакт юриста; 3 сентября познакомили с Аней"
+      >
+        <NotesMock />
+      </FeatureCard>
+    </ul>
+  </div>
+</section>

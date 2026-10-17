@@ -1,0 +1,25 @@
+---
+import Benefits from "../components/sections/Benefits.astro";
+import FinalCta from "../components/sections/FinalCta.astro";
+import Hero from "../components/sections/Hero.astro";
+import Problem from "../components/sections/Problem.astro";
+import Solution from "../components/sections/Solution.astro";
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Tribe — помните каждого, кого знаете лично"
+  description="Кто человек, откуда вы знакомы и о чём договорились — в одной карточке. Открыли перед звонком и сразу всё вспомнили"
+>
+  <main class="pb-14 md:pb-0">
+    <Hero />
+    <Problem />
+    <Solution />
+    <div class="md:px-gutter md:pb-32">
+      <div class="mx-auto max-w-content">
+        <Benefits />
+        <FinalCta />
+      </div>
+    </div>
+  </main>
+</Base>

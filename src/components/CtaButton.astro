@@ -1,0 +1,28 @@
+---
+import { APP_URL } from "../config";
+
+interface Props {
+  variant: "dark" | "light";
+  // "hero": sized by its text on desktop; "final": fills the 400px column
+  size: "hero" | "final";
+}
+
+const { variant, size } = Astro.props;
+---
+
+<a
+  href={APP_URL}
+  class:list={[
+    "flex h-60 items-center justify-center gap-10 rounded-20 text-button font-bold whitespace-nowrap no-underline",
+    "transition-[background-color] duration-150 ease-[ease]",
+    "focus-visible:outline-2 focus-visible:outline-offset-3",
+    "md:gap-12 md:text-button-lg",
+    variant === "dark" && "bg-ink text-pistachio hover:bg-ink-hover focus-visible:outline-ink",
+    variant === "light" &&
+      "bg-pistachio text-ink hover:bg-pistachio-hover focus-visible:outline-pistachio",
+    size === "hero" && "md:h-64 md:px-40",
+    size === "final" && "md:h-68 md:rounded-22",
+  ]}
+>
+  Добавить первый контакт <span aria-hidden="true">→</span>
+</a>

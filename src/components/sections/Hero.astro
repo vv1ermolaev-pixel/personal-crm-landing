@@ -1,0 +1,65 @@
+---
+import heroPhoto from "../../assets/photos/hero.jpg";
+import CtaButton from "../CtaButton.astro";
+import Highlight from "../Highlight.astro";
+import HistoryCard from "../HistoryCard.astro";
+import Logo from "../Logo.astro";
+import Photo from "../Photo.astro";
+import Avatar from "../Avatar.astro";
+
+const ringAvatar = "size-32 border-2 border-avatar-ring text-11 md:size-36 md:text-12";
+---
+
+<section class="md:px-gutter md:pb-96">
+  <div class="mx-auto flex max-w-content flex-col">
+    <header class="flex h-68 items-center justify-center px-20 md:h-88 md:px-0">
+      <Logo />
+    </header>
+
+    <div
+      class="flex flex-col md:pt-56 lg:grid lg:grid-cols-[minmax(0,1fr)_520px] lg:items-center lg:gap-64"
+    >
+      <div class="flex flex-col px-20 pt-28 md:items-start md:p-0">
+        <h1 class="font-display text-h1 font-semibold md:text-h1-lg">
+          <Highlight class="rounded-12 bg-white px-10 md:rounded-18 md:px-16">Помните каждого,</Highlight> кого
+          знаете лично
+        </h1>
+        <p class="mt-18 text-lead font-medium text-pretty text-copy md:mt-28 md:max-w-560 md:text-lead-lg">
+          Кто человек, откуда вы знакомы и о чём договорились — в одной карточке. Открыли перед звонком и
+          сразу всё вспомнили
+        </p>
+
+        <div class="mt-26 flex flex-col gap-12 md:mt-36 md:items-center">
+          <CtaButton variant="dark" size="hero" />
+          <p class="text-center text-micro font-medium text-copy-micro md:text-micro-lg">
+            Нужно только имя — остальное потом
+          </p>
+        </div>
+
+        <div
+          class="mt-20 flex items-center gap-12 rounded-16 bg-proof-bg px-14 py-12 md:mt-36 md:gap-14 md:rounded-18 md:py-14 md:pr-20 md:pl-16"
+        >
+          <div class="flex flex-none" aria-hidden="true">
+            <Avatar initials="А" class={`${ringAvatar} bg-ink text-pistachio`} />
+            <Avatar initials="Д" class={`${ringAvatar} -ml-8 bg-butter-avatar md:-ml-9`} />
+            <Avatar initials="М" class={`${ringAvatar} -ml-8 bg-white md:-ml-9`} />
+          </div>
+          <p class="text-proof font-semibold md:text-proof-lg">
+            Сотни довольных пользователей уже пользуются продуктом
+          </p>
+        </div>
+      </div>
+
+      <div class="mx-14 mt-36 md:relative md:mx-0 md:mt-56 md:h-720 md:w-full md:max-w-520 lg:mt-0">
+        <Photo
+          src={heroPhoto}
+          alt="человек с телефоном перед встречей"
+          widths={[448, 896]}
+          priority
+          class="absolute top-0 right-0 bottom-200 left-72"
+        />
+        <HistoryCard class="md:absolute md:bottom-0 md:left-0 md:w-400" />
+      </div>
+    </div>
+  </div>
+</section>

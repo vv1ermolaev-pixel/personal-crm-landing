@@ -1,0 +1,28 @@
+---
+import Highlight from "../Highlight.astro";
+import NumBadge from "../NumBadge.astro";
+
+const problems = [
+  "Перед встречей мучительно вспоминаете, откуда вы знакомы",
+  "Важные детали (новая работа, планы, имя ребёнка) забываются за неделю, и вы снова задаёте те же вопросы",
+  "Пообещали что-то прислать или познакомить, и забыли",
+];
+---
+
+<section class="px-20 pt-72 md:bg-butter md:px-gutter md:pt-0 md:pb-120">
+  <div class="mx-auto flex max-w-content flex-col gap-24 md:gap-40 md:pt-120">
+    <h2 class="font-display text-h2 font-semibold md:text-h2-lg">
+      <Highlight class="rounded-12 bg-white px-10 md:rounded-16 md:px-14">Знакомо?</Highlight>
+    </h2>
+    <ul class="flex flex-col gap-10 md:gap-16 lg:grid lg:grid-cols-3">
+      {
+        problems.map((text, index) => (
+          <li class="flex items-start gap-14 rounded-22 bg-white p-20 md:flex-col md:gap-24 md:rounded-28 md:p-28">
+            <NumBadge variant="chip" value={`0${index + 1}`} />
+            <p class="text-problem font-semibold text-pretty md:text-problem-lg">{text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

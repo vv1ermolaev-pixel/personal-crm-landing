@@ -1,0 +1,20 @@
+---
+interface Props {
+  variant: "chip" | "circle";
+  value: string;
+}
+
+const { variant, value } = Astro.props;
+---
+
+{
+  variant === "chip" ? (
+    <span class="mt-1 flex-none rounded-8 bg-pistachio px-8 py-4 font-display text-12 font-semibold md:mt-0 md:px-10 md:py-5 md:text-13">
+      {value}
+    </span>
+  ) : (
+    <span class="flex size-32 flex-none items-center justify-center rounded-full bg-ink font-display text-12 font-semibold text-pistachio md:size-44 md:text-14">
+      {value}
+    </span>
+  )
+}

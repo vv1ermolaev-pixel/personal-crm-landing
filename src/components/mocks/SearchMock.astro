@@ -1,0 +1,32 @@
+---
+import Avatar from "../Avatar.astro";
+
+const results = [
+  { initials: "АС", rest: "на Соколова", note: "Конференция в Казани", color: "bg-pistachio" },
+  { initials: "АК", rest: "дрей Ким", note: "Сосед по даче", color: "bg-butter-avatar" },
+];
+---
+
+<div
+  class="flex h-48 flex-none items-center gap-10 rounded-14 bg-white px-16 text-16 font-semibold shadow-mock md:h-52 md:px-18 md:text-17"
+>
+  <span class="relative size-16 flex-none">
+    <span class="absolute top-0 left-0 size-14 rounded-full border-2 border-ink"></span>
+    <span class="absolute top-11 left-11 h-2 w-6 origin-top-left rotate-45 bg-ink"></span>
+  </span>
+  <span>Ан</span>
+  <span class="-ml-8 h-20 w-2 bg-ink"></span>
+</div>
+{
+  results.map((result) => (
+    <div class="flex items-center gap-12 px-4 py-6 md:px-6 md:py-8">
+      <Avatar initials={result.initials} class={`size-36 text-12 md:size-40 md:text-13 ${result.color}`} />
+      <div class="flex flex-col gap-1 md:gap-2">
+        <div class="text-15 font-semibold md:text-16">
+          <span class="rounded-4 bg-pistachio px-2">Ан</span>{result.rest}
+        </div>
+        <div class="text-12 text-muted md:text-13">{result.note}</div>
+      </div>
+    </div>
+  ))
+}

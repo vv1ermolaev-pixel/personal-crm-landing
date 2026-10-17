@@ -1,0 +1,10 @@
+---
+// Inline "plate" behind heading words; radius, padding and color come from the caller
+interface Props {
+  class: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span class:list={["box-decoration-clone", className]}><slot /></span>

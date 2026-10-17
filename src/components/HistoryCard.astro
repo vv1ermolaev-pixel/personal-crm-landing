@@ -1,0 +1,72 @@
+---
+import Avatar from "./Avatar.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const entries = [
+  { date: "12.10", text: "Переезжает в Питер в декабре. Спросить про квартиру", active: true },
+  { date: "03.09", text: "Обещал познакомить с Аней —", done: true },
+  { date: "17.07", text: "У дочери Сони день рождения, 6 лет" },
+];
+---
+
+<div
+  class:list={[
+    "flex flex-col gap-16 rounded-28 bg-white p-18 shadow-card md:gap-22 md:rounded-32 md:p-28 md:shadow-card-lg",
+    className,
+  ]}
+>
+  <div class="flex items-center justify-between gap-10">
+    <div class="flex flex-col gap-3 md:gap-4">
+      <div class="text-17 font-bold md:text-20">Дмитрий Орлов</div>
+      <div class="text-12 font-semibold text-muted md:text-14">Сосед · знакомы с 2019</div>
+    </div>
+    <Avatar initials="ДО" class="size-40 bg-pistachio text-13 md:size-48 md:text-15" />
+  </div>
+
+  <ol
+    class="relative flex flex-col pl-22 before:absolute before:top-8 before:bottom-8 before:left-5 before:w-2 before:rounded-1 before:bg-mint-line md:pl-26 md:before:left-6"
+  >
+    {
+      entries.map((entry, index) => (
+        <li
+          class:list={[
+            "relative flex flex-col items-start gap-4 md:gap-6",
+            index < entries.length - 1 && "pb-14 md:pb-18",
+          ]}
+        >
+          <span
+            aria-hidden="true"
+            class:list={[
+              "absolute top-3 -left-22 size-12 rounded-full md:top-4 md:-left-26 md:size-14",
+              entry.active ? "border-3 border-pistachio bg-ink" : "border-2 border-sage-dot bg-white",
+            ]}
+          />
+          <span
+            class:list={[
+              "py-2 font-display text-11 font-semibold md:py-3 md:text-12",
+              entry.active ? "rounded-6 bg-pistachio px-7 md:px-8" : "text-muted",
+            ]}
+          >
+            {entry.date}
+          </span>
+          <p
+            class:list={["text-15 leading-note font-medium md:text-17", !entry.active && "text-copy"]}
+          >
+            {entry.text}
+            {entry.done && " "}
+            {entry.done && (
+              <span class="inline-block rounded-6 bg-pistachio px-6 py-1 font-bold whitespace-nowrap text-ink md:px-7">
+                ✓ сделано
+              </span>
+            )}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+</div>

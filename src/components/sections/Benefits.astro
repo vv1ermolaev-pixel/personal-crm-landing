@@ -1,0 +1,33 @@
+---
+import benefitsPhoto from "../../assets/photos/benefits.jpg";
+import Highlight from "../Highlight.astro";
+import NumBadge from "../NumBadge.astro";
+import Photo from "../Photo.astro";
+
+const benefits = [
+  "Вас запоминают как человека, который помнит других",
+  "Разговор продолжается с того места, где остановились, а не начинается заново",
+  "Обещания выполняются, потому что они записаны",
+];
+---
+
+<section
+  class="flex flex-col gap-20 px-20 pt-72 md:gap-40 md:px-0 md:pt-120 lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-48"
+>
+  <div class="flex flex-col md:gap-40">
+    <h2 class="font-display text-h2 font-semibold md:pt-18 md:text-h2-lg">
+      <Highlight class="rounded-12 bg-white px-10 md:rounded-16 md:px-14">Что изменится</Highlight>
+    </h2>
+    <Photo src={benefitsPhoto} alt="двое разговаривают за кофе" widths={[660, 1320]} class="h-440" />
+  </div>
+  <ol class="flex flex-col">
+    {
+      benefits.map((text, index) => (
+        <li class="flex items-start gap-14 border-b-[1.5px] border-rule py-20 last:border-b-0 md:gap-20 md:py-28">
+          <NumBadge variant="circle" value={`0${index + 1}`} />
+          <p class="pt-2 text-benefit font-bold text-pretty md:pt-4 md:text-benefit-lg">{text}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>
