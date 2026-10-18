@@ -1,0 +1,82 @@
+name: Deploy
+
+# Every push to main: build dist/ -> rsync --delete to the server -> check the site.
+# nginx serves /var/www/funkicrm.ru as is: nothing is built on the server.
+on:
+  push:
+    branches: [main]
+
+# One deploy at a time: a newer push waits until the running deploy finishes
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  SITE_URL: https://funkicrm.ru
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 12.9.1
+          cache: true
+
+      - name: Build
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+          # Version marker: the site check below compares it with this commit
+          echo "$GITHUB_SHA" > dist/version.txt
+
+      - name: Set up SSH
+        env:
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ vars.DEPLOY_USER }}
+          DEPLOY_KNOWN_HOSTS: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Pinned server host keys: connect only to our server
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<EOF
+          Host server
+            HostName $DEPLOY_HOST
+            User $DEPLOY_USER
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          EOF
+
+      - name: Upload to the server
+        # The server lets this key run only rrsync, locked to /var/www/funkicrm.ru,
+        # so "server:/" is that folder. Files that are not in dist/ get deleted;
+        # new files go live together at the end of the transfer.
+        run: rsync -rlptz --chmod=D755,F644 --delete-delay --delay-updates dist/ server:/
+
+      - name: Check the site
+        run: |
+          version=$(curl -fsS --retry 5 --retry-all-errors "$SITE_URL/version.txt")
+          if [ "$version" != "$GITHUB_SHA" ]; then
+            echo "::error::Server serves version $version, expected $GITHUB_SHA"
+            exit 1
+          fi
+          code=$(curl -sS -o /dev/null -w '%{http_code}' "$SITE_URL/")
+          echo "$SITE_URL/ -> HTTP $code, version $version"
+          if [ "$code" != 200 ]; then
+            echo "::error::Main page answered HTTP $code"
+            exit 1
+          fi
