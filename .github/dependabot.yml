@@ -1,0 +1,30 @@
+# Dependabot: weekly update PRs for site packages and for build steps in GitHub Actions.
+# Security fixes come as separate PRs right away (enabled in the repo settings).
+# PRs do not deploy anything: the site goes live only after a merge into main.
+version: 2
+updates:
+  - package-ecosystem: npm # also reads pnpm-lock.yaml
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Moscow
+    # Skip versions younger than a week: pnpm refuses too fresh releases anyway
+    cooldown:
+      default-days: 7
+    # One PR for all small updates, separate PRs for major versions
+    groups:
+      site-packages:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Moscow
+    cooldown:
+      default-days: 7
+    groups:
+      build-steps:
+        patterns: ["*"]
