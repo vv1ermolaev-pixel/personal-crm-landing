@@ -42,3 +42,25 @@ pnpm preview   # посмотреть собранную версию
 1. На сервере установлен `rsync` (`sudo apt-get install -y rsync`), папка `/var/www/funkicrm.ru` принадлежит пользователю `crmapp`.
 2. Ключ деплоя: публичный — в `~crmapp/.ssh/authorized_keys` с ограничением `command="/usr/bin/rrsync -wo /var/www/funkicrm.ru",restrict`. С этим ключом можно только записывать файлы в папку лендинга — ни зайти на сервер, ни тронуть приложение нельзя.
 3. В GitHub (Settings → Secrets and variables → Actions): секрет `DEPLOY_SSH_KEY` (приватный ключ деплоя), переменные `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_KNOWN_HOSTS`.
+
+## Заголовки безопасности (nginx)
+
+Настройки nginx для лендинга лежат в `deploy/nginx/funkicrm-landing.conf`. На сервере это файл `/etc/nginx/sites-available/funkicrm-landing.conf`. В нём заданы заголовки, которые получает браузер:
+
+- `Strict-Transport-Security` — браузер год открывает сайт только по HTTPS (поддомены `app` и `test-app` не затронуты);
+- `Content-Security-Policy` — скрипты, стили, картинки и шрифты грузятся только с самого сайта; встроенные скрипты и стили разрешены; страницу нельзя встроить в чужой сайт;
+- `X-Frame-Options: DENY` — то же «нельзя встроить», для старых браузеров;
+- `Referrer-Policy` — на другие сайты (и в приложение) уходит только адрес `https://funkicrm.ru`, без пути;
+- `X-Content-Type-Options: nosniff` — браузер не угадывает тип файла;
+- `Permissions-Policy` — камера, микрофон, геолокация, оплата и подобное выключены.
+
+Номер версии nginx не показывает: `server_tokens off` в общем файле `/etc/nginx/conf.d/funkicrm-hardening.conf`.
+
+Выкатка на сервер через Actions этот файл не трогает. После правки его нужно поставить вручную (нужен пароль sudo):
+
+```sh
+scp deploy/nginx/funkicrm-landing.conf deploy/nginx/install.sh crm:landing-nginx/
+ssh -t crm "sudo bash landing-nginx/install.sh"
+```
+
+Скрипт делает копию, проверяет конфиг (`nginx -t`) и при ошибке возвращает всё как было. Проверить заголовки: `curl -sI https://funkicrm.ru/`.
